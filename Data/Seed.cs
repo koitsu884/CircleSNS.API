@@ -21,7 +21,7 @@ namespace CircleSNS.API.Data
 
         public void SeedUsers()
         {
-            _context.Database.EnsureCreated();
+            //_context.Database.EnsureCreated();
 
             string[] roles = {"Administrator", "Accountant", "Member"};
 

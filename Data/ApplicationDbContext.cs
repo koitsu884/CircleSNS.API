@@ -12,5 +12,15 @@ namespace CircleSNS.API.Data
         }
 
         public DbSet<Member> Members { get; set;}
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<Member>()
+                .HasOne(m=>m.Identity)
+                .WithOne()
+                .HasForeignKey<Member>(m => m.IdentityId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

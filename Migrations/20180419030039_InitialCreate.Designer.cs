@@ -11,7 +11,7 @@ using System;
 namespace CircleSNS.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180418034940_InitialCreate")]
+    [Migration("20180419030039_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,7 +91,9 @@ namespace CircleSNS.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdentityId");
+                    b.HasIndex("IdentityId")
+                        .IsUnique()
+                        .HasFilter("[IdentityId] IS NOT NULL");
 
                     b.ToTable("Members");
                 });
@@ -207,8 +209,9 @@ namespace CircleSNS.API.Migrations
             modelBuilder.Entity("CircleSNS.API.Models.Member", b =>
                 {
                     b.HasOne("CircleSNS.API.Models.AppUser", "Identity")
-                        .WithMany()
-                        .HasForeignKey("IdentityId");
+                        .WithOne()
+                        .HasForeignKey("CircleSNS.API.Models.Member", "IdentityId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

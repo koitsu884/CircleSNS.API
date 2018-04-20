@@ -18,8 +18,12 @@ namespace CircleSNS.API.Controllers
 
         [HttpGet("{id}" , Name = "GetMember")]
         [Authorize]
-        public async Task<Member> GetMember(int id){
-           return await _repo.GetMember(id);
+        public async Task<IActionResult> GetMember(int id){
+           var member = await _repo.GetMember(id);
+           if(member == null)
+                return NotFound();
+
+            return new ObjectResult(member);
         }
 
         [HttpPost]
@@ -48,7 +52,8 @@ namespace CircleSNS.API.Controllers
             member = await _repo.Register(member, this._defaultPassword);
             await _repo.AddRoles(member.Identity, model.Roles);
             
-            return CreatedAtRoute("GetMember", new {id = member.Id});
+            var memberForReturn = _mapper.Map<MemberForReturnDto>(member);
+            return CreatedAtRoute("GetMember", new {id = member.Id}, memberForReturn);
         }
 
         [HttpPut("{id}")]
@@ -69,12 +74,28 @@ namespace CircleSNS.API.Controllers
             if(currentUserId != appUserFromRepo.Id)
                 return Unauthorized();
 
-            _mapper.Map(model, appUserFromRepo);
             _mapper.Map(model, memberFromRepo);
+            if(await _repo.SaveAll())
+            {
+                _mapper.Map(model, appUserFromRepo);
+                await _repo.UpdateAppUser(appUserFromRepo); 
+                return Ok();
+            }
+            return BadRequest("Failed to update the member");
+        }
 
-            await _repo.UpdateAppUser(appUserFromRepo);
-
-            return Ok();
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> DeleteMember(int id){
+            var memberFromRepo = await this._repo.GetMember(id);
+            if(memberFromRepo == null){
+                return NotFound("The user not found");
+            }
+            var result = await this._repo.DeleteMember(memberFromRepo);
+            if(result.Succeeded){
+                return NoContent();
+            }
+            return BadRequest("Failed to delete the user");
         }
     }
 }

@@ -15,8 +15,10 @@ namespace CircleSNS.API.Data
         Task<bool> RoleExists(string role);
         Task<IList<string>> GetRolesForAppUser(AppUser user);
         Task UpdateAppUser(AppUser user, string[] newRoles = null);
+        Task<IdentityResult> DelteAppUser(AppUser user);
         Task<AppUser> GetAppUser(string id);
         Task<Member> GetMember(int id);
+        Task<IdentityResult> DeleteMember(Member member);
         Task<bool> SaveAll();
     }
 }

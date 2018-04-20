@@ -175,7 +175,7 @@ namespace CircleSNS.API.Migrations
                         column: x => x.IdentityId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -220,7 +220,9 @@ namespace CircleSNS.API.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Members_IdentityId",
                 table: "Members",
-                column: "IdentityId");
+                column: "IdentityId",
+                unique: true,
+                filter: "[IdentityId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -13,6 +13,7 @@ namespace CircleSNS.API.Helper
           CreateMap<CreateUserDto,AppUser>();
           CreateMap<UpdateMemberDto,AppUser>();
           CreateMap<UpdateMemberDto,Member>();
+          CreateMap<Member, MemberForReturnDto>();
         }
     }
 }

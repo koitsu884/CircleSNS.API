@@ -124,5 +124,15 @@ namespace CircleSNS.API.Data
             await this._userManager.RemoveFromRolesAsync(user, await this._userManager.GetRolesAsync(user));
             return await this._userManager.AddToRolesAsync(user, roles);
         }
+
+        public async Task<IdentityResult> DelteAppUser(AppUser user)
+        {
+            return await this._userManager.DeleteAsync(user);
+        }
+
+        public async Task<IdentityResult> DeleteMember(Member member){
+            var appUser = await this.GetAppUser(member.IdentityId);
+            return await this._userManager.DeleteAsync(appUser); //Member will be deleted (Cascade delete)
+        }
     }
 }

@@ -21,6 +21,19 @@ namespace CircleSNS.API.Controllers
             _mapper = mapper;
         }
 
+        // [HttpDelete("{userId}")]
+        // [Authorize(Roles = "Administrator")]
+        // public async Task<IActionResult> DeleteAppUser(string userId){
+        //     var appUserFromRepo = await this._repo.GetAppUser(userId);
+        //     if(appUserFromRepo == null){
+        //         return NotFound("The user not found");
+        //     }
+        //     var result = await this._repo.DelteAppUser(appUserFromRepo);
+        //     if(result.Succeeded){
+        //         return NoContent();
+        //     }
+        //     return BadRequest("Failed to delete the user");
+        // }
 
         [HttpPost("role/{userId}/")]
         [Authorize(Roles = "Administrator")]
