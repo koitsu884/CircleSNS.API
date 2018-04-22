@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using CircleSNS.API.Data;
 using CircleSNS.API.Dto;
+using CircleSNS.API.Helper;
 using CircleSNS.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +17,15 @@ namespace CircleSNS.API.Controllers
 
         private readonly string _defaultPassword = "P@ss123!!";
         public MemberController(IAuthRepository repo, IMapper mapper) : base(repo, mapper){}
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetMembers(UserParams userParams)
+        {
+            var members = await _repo.GetMembers(userParams);
+            var membersToReturn = this._mapper.Map<IEnumerable<MemberForListDto>>(members);
+            return Ok(membersToReturn);
+        }
 
         [HttpGet("{id}" , Name = "GetMember")]
         [Authorize]

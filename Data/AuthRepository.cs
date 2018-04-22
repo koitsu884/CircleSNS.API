@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using CircleSNS.API.Helper;
 using CircleSNS.API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -118,6 +119,10 @@ namespace CircleSNS.API.Data
 
         public async Task<Member> GetMember(int id){
             return await _context.Members.FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        public async Task<IEnumerable<Member>> GetMembers(UserParams userParams){
+            return await _context.Members.ToListAsync();
         }
         public async Task<IdentityResult> AddRoles(AppUser user, string[] roles)
         {

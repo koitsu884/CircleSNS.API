@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CircleSNS.API.Helper;
 using CircleSNS.API.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -18,6 +19,7 @@ namespace CircleSNS.API.Data
         Task<IdentityResult> DelteAppUser(AppUser user);
         Task<AppUser> GetAppUser(string id);
         Task<Member> GetMember(int id);
+        Task<IEnumerable<Member>> GetMembers(UserParams userParams);
         Task<IdentityResult> DeleteMember(Member member);
         Task<bool> SaveAll();
     }
